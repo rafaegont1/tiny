@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include "LexicalAnalysis.h"
 
-void la_init(LexicalAnalysis *la, const char* filename)
+void la_init(LexicalAnalysis* la, const char* filename)
 {
   la->input = fopen(filename, "r");
   if (!la->input) {
@@ -16,13 +16,13 @@ void la_init(LexicalAnalysis *la, const char* filename)
   la->line = 1;
 }
 
-void la_deinit(LexicalAnalysis *la)
+void la_deinit(LexicalAnalysis* la)
 {
   fclose(la->input);
   map_deinit(&la->symbol_table);
 }
 
-Lexeme la_nextToken(LexicalAnalysis *la)
+Lexeme la_nextToken(LexicalAnalysis* la)
 {
   int state = 1;
   Lexeme lex;

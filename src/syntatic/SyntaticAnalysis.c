@@ -6,33 +6,33 @@
 #include "SyntaticAnalysis.h"
 #include "../interpreter/expr/expr.h"
 
-void sa_eat(SyntaticAnalysis *sa, const enum TokenType type);
-void sa_showError(SyntaticAnalysis *sa);
-BlockCmd* sa_program(SyntaticAnalysis *sa);
-BlockCmd* sa_cmdList(SyntaticAnalysis *sa);
-Command* sa_cmd(SyntaticAnalysis *sa);
-Command* sa_assign(SyntaticAnalysis *sa);
-Command* sa_output(SyntaticAnalysis *sa);
-Command* sa_if(SyntaticAnalysis *sa);
-Command* sa_while(SyntaticAnalysis *sa);
-Expr* sa_boolExpr(SyntaticAnalysis *sa);
-Expr* sa_intExpr(SyntaticAnalysis *sa);
-Expr* sa_intTerm(SyntaticAnalysis *sa);
-Expr* sa_var(SyntaticAnalysis *sa);
-Expr* sa_const(SyntaticAnalysis *sa);
+void sa_eat(SyntaticAnalysis* sa, const enum TokenType type);
+void sa_showError(SyntaticAnalysis* sa);
+BlockCmd* sa_program(SyntaticAnalysis* sa);
+BlockCmd* sa_cmdList(SyntaticAnalysis* sa);
+Command* sa_cmd(SyntaticAnalysis* sa);
+Command* sa_assign(SyntaticAnalysis* sa);
+Command* sa_output(SyntaticAnalysis* sa);
+Command* sa_if(SyntaticAnalysis* sa);
+Command* sa_while(SyntaticAnalysis* sa);
+Expr* sa_boolExpr(SyntaticAnalysis* sa);
+Expr* sa_intExpr(SyntaticAnalysis* sa);
+Expr* sa_intTerm(SyntaticAnalysis* sa);
+Expr* sa_var(SyntaticAnalysis* sa);
+Expr* sa_const(SyntaticAnalysis* sa);
 
-void sa_init(SyntaticAnalysis *sa, LexicalAnalysis *la) {
+void sa_init(SyntaticAnalysis* sa, LexicalAnalysis* la) {
   sa->la = la;
   sa->lex = la_nextToken(la);
 }
 
-BlockCmd* sa_start(SyntaticAnalysis *sa) {
+BlockCmd* sa_start(SyntaticAnalysis* sa) {
   BlockCmd* cmd = sa_program(sa);
   sa_eat(sa, TT_END_OF_FILE);
   return cmd;
 }
 
-void sa_eat(SyntaticAnalysis *sa, const enum TokenType type) {
+void sa_eat(SyntaticAnalysis* sa, const enum TokenType type) {
   //printf("Expected (..., %s), found (\"%s\" %s)\n", tt2str(type),
   //                                                  sa->lex.token,
   //                                                  tt2str(sa->lex.type));
@@ -40,7 +40,7 @@ void sa_eat(SyntaticAnalysis *sa, const enum TokenType type) {
   else sa_showError(sa);
 }
 
-void sa_showError(SyntaticAnalysis *sa) {
+void sa_showError(SyntaticAnalysis* sa) {
   printf("Line %02d: ",sa->la->line);
 
   switch (sa->lex.type) {
@@ -62,16 +62,18 @@ void sa_showError(SyntaticAnalysis *sa) {
 }
 
 // <program>   ::= program <cmdlist>
-BlockCmd* sa_program(SyntaticAnalysis *sa) {
+BlockCmd* sa_program(SyntaticAnalysis* sa) {
   sa_eat(sa, TT_PROGRAM);
   return sa_cmdList(sa);
 }
 
 // <cmdlist>   ::= <cmd> { <cmd> }
-BlockCmd* sa_cmdList(SyntaticAnalysis *sa) {
+BlockCmd* sa_cmdList(SyntaticAnalysis* sa) {
   BlockCmd* cmds = (BlockCmd*) malloc(sizeof(BlockCmd));
+  Command* cmd;
 
-  Command* cmd = sa_cmd(sa);
+  blk_init(cmds);
+  cmd = sa_cmd(sa);
   blk_set(cmds, cmd);
 
   while (sa->lex.type == TT_VAR ||
@@ -86,7 +88,7 @@ BlockCmd* sa_cmdList(SyntaticAnalysis *sa) {
 }
 
 // <cmd>       ::= (<assign> | <output> | <if> | <while>) ;
-Command* sa_cmd(SyntaticAnalysis *sa) {
+Command* sa_cmd(SyntaticAnalysis* sa) {
   Command* cmd;
 
   switch (sa->lex.type) {
@@ -117,7 +119,7 @@ Command* sa_cmd(SyntaticAnalysis *sa) {
 }
 
 // <assign>    ::= <var> = <intexpr>
-Command* sa_assign(SyntaticAnalysis *sa) {
+Command* sa_assign(SyntaticAnalysis* sa) {
   AssignCmd* assign = (AssignCmd*) malloc(sizeof(AssignCmd));
 
   assign->var = sa_var(sa);
@@ -128,7 +130,7 @@ Command* sa_assign(SyntaticAnalysis *sa) {
 }
 
 // <output>    ::= output <intexpr>
-Command* sa_output(SyntaticAnalysis *sa) {
+Command* sa_output(SyntaticAnalysis* sa) {
   Expr* interger;
 
   sa_eat(sa, TT_OUTPUT);
@@ -138,7 +140,7 @@ Command* sa_output(SyntaticAnalysis *sa) {
 }
 
 // <if>        ::= if <boolexpr> then <cmdlist> [ else <cmdlist> ] done
-Command* sa_if(SyntaticAnalysis *sa) {
+Command* sa_if(SyntaticAnalysis* sa) {
   IfCmd* conditional = (IfCmd*) malloc(sizeof(IfCmd));
   sa_eat(sa, TT_IF);
 
@@ -159,7 +161,7 @@ Command* sa_if(SyntaticAnalysis *sa) {
 }
 
 // <while>     ::= while <boolexpr> do <cmdlist> done
-Command* sa_while(SyntaticAnalysis *sa) {
+Command* sa_while(SyntaticAnalysis* sa) {
   WhileCmd* loop = (WhileCmd*) malloc(sizeof(WhileCmd));
 
   sa_eat(sa, TT_WHILE);
@@ -174,7 +176,7 @@ Command* sa_while(SyntaticAnalysis *sa) {
 // <boolexpr>  ::= false | true |
 //                 not <boolexpr> |
 //                 <intterm> (== | != | < | > | <= | >=) <intterm>
-Expr* sa_boolExpr(SyntaticAnalysis *sa) {
+Expr* sa_boolExpr(SyntaticAnalysis* sa) {
   SingleBool* bool_expr;
   int* value;
 
@@ -204,27 +206,27 @@ Expr* sa_boolExpr(SyntaticAnalysis *sa) {
 
     switch (sa->lex.type) {
       case TT_EQUAL:
-        bool_expr->op = EQUAL;
+        bool_expr->op = OP_EQUAL;
         break;
 
       case TT_NOT_EQUAL:
-        bool_expr->op = NOT_EQUAL;
+        bool_expr->op = OP_NOT_EQUAL;
         break;
 
       case TT_LOWER:
-        bool_expr->op = LOWER;
+        bool_expr->op = OP_LOWER;
         break;
 
       case TT_GREATER:
-        bool_expr->op = GREATER;
+        bool_expr->op = OP_GREATER;
         break;
 
       case TT_LOWER_EQUAL:
-        bool_expr->op = LOWER_EQUAL;
+        bool_expr->op = OP_LOWER_EQUAL;
         break;
 
       case TT_GREATER_EQUAL:
-        bool_expr->op = GREATER_EQUAL;
+        bool_expr->op = OP_GREATER_EQUAL;
         break;
 
       default:
@@ -239,7 +241,7 @@ Expr* sa_boolExpr(SyntaticAnalysis *sa) {
 }
 
 // <intexpr>   ::= [ + | - ] <intterm> [ (+ | - | * | / | %) <intterm> ]
-Expr* sa_intExpr(SyntaticAnalysis *sa) {
+Expr* sa_intExpr(SyntaticAnalysis* sa) {
   Expr* int_expr;
   bool is_negative = false;
 
@@ -265,23 +267,23 @@ Expr* sa_intExpr(SyntaticAnalysis *sa) {
 
     switch (sa->lex.type) {
       case TT_ADD:
-        bin->op = ADD;
+        bin->op = OP_ADD;
         break;
 
       case TT_SUB:
-        bin->op = SUB;
+        bin->op = OP_SUB;
         break;
 
       case TT_MUL:
-        bin->op = MUL;
+        bin->op = OP_MUL;
         break;
 
       case TT_DIV:
-        bin->op = DIV;
+        bin->op = OP_DIV;
         break;
 
       case TT_MOD:
-        bin->op = MOD;
+        bin->op = OP_MOD;
         break;
 
       default:
@@ -298,7 +300,7 @@ Expr* sa_intExpr(SyntaticAnalysis *sa) {
 }
 
 // <intterm>   ::= <var> | <const> | read
-Expr* sa_intTerm(SyntaticAnalysis *sa) {
+Expr* sa_intTerm(SyntaticAnalysis* sa) {
   Expr* interger;
 
   switch(sa->lex.type) {
@@ -323,7 +325,7 @@ Expr* sa_intTerm(SyntaticAnalysis *sa) {
 }
 
 // <var>       ::= id
-Expr* sa_var(SyntaticAnalysis *sa) {
+Expr* sa_var(SyntaticAnalysis* sa) {
   char* var_name = (char*) malloc(strlen(sa->lex.token) + 1);
 
   strcpy(var_name, sa->lex.token);
@@ -333,7 +335,7 @@ Expr* sa_var(SyntaticAnalysis *sa) {
 }
 
 // <const>     ::= number
-Expr* sa_const(SyntaticAnalysis *sa) {
+Expr* sa_const(SyntaticAnalysis* sa) {
   int* value = (int*) malloc(sizeof(int));
 
   *value = atoi(sa->lex.token);

@@ -74,19 +74,23 @@ int expr_binaryInt(BinaryInt* intergers) {
   int value;
 
   switch (intergers->op) {
-    case ADD:
+    case OP_ADD:
       value = v1 + v2;
       break;
-    case SUB:
+
+    case OP_SUB:
       value = v1 - v2;
       break;
-    case MUL:
+
+    case OP_MUL:
       value = v1 * v2;
       break;
-    case DIV:
+
+    case OP_DIV:
       value = v1 / v2;
       break;
-    case MOD:
+
+    case OP_MOD:
       value = v1 % v2;
       break;
   }
@@ -100,27 +104,27 @@ int expr_singleBoll(SingleBool* booleans) {
   int value;
 
   switch (booleans->op) {
-  case EQUAL:
+  case OP_EQUAL:
     value = v1 == v2;
     break;
 
-  case NOT_EQUAL:
+  case OP_NOT_EQUAL:
     value = v1 != v2;
     break;
 
-  case LOWER:
+  case OP_LOWER:
     value = v1 < v2;
     break;
 
-  case GREATER:
+  case OP_GREATER:
     value = v1 > v2;
     break;
 
-  case LOWER_EQUAL:
+  case OP_LOWER_EQUAL:
     value = v1 <= v2;
     break;
 
-  case GREATER_EQUAL:
+  case OP_GREATER_EQUAL:
     value = v1 >= v2;
     break;
   }

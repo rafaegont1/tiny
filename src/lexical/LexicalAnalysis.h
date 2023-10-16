@@ -13,8 +13,8 @@ struct LexicalAnalysis {
   FILE* input;
 };
 
-void la_init(LexicalAnalysis *la, const char* filename);
-void la_deinit(LexicalAnalysis *la);
-Lexeme la_nextToken(LexicalAnalysis *la);
+void la_init(LexicalAnalysis* la, const char* filename);
+void la_deinit(LexicalAnalysis* la);
+Lexeme la_nextToken(LexicalAnalysis* la);
 
 #endif

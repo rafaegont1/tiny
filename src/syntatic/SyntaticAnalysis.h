@@ -11,7 +11,7 @@ struct SyntaticAnalysis {
   Lexeme lex;
 };
 
-void sa_init(SyntaticAnalysis *sa, LexicalAnalysis *lex);
-BlockCmd* sa_start(SyntaticAnalysis *sa);
+void sa_init(SyntaticAnalysis* sa, LexicalAnalysis* lex);
+BlockCmd* sa_start(SyntaticAnalysis* sa);
 
 #endif /* SYNTATIC_ANALYSIS_H */

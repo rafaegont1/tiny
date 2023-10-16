@@ -10,6 +10,6 @@ typedef struct Lexeme {
   enum TokenType type;
 } Lexeme;
 
-void lx_init(Lexeme *lex);
+void lx_init(Lexeme* lex);
 
 #endif /* LEXEME_H */

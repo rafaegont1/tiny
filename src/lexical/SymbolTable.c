@@ -1,6 +1,6 @@
 #include "SymbolTable.h"
 
-void st_init(map_int_t *symbol_table) {
+void st_init(map_int_t* symbol_table) {
   map_init(symbol_table);
 
   // Symbols
@@ -37,11 +37,11 @@ void st_init(map_int_t *symbol_table) {
   map_set(symbol_table, "not", TT_NOT);
 }
 
-bool st_contains(map_int_t *symbol_table, const char *token) {
+bool st_contains(map_int_t* symbol_table, const char* token) {
   return map_get(symbol_table, token) != NULL;
 }
 
-enum TokenType st_find(map_int_t *symbol_table, const char *token) {
+enum TokenType st_find(map_int_t* symbol_table, const char* token) {
   int *token_type = map_get(symbol_table, token);
 
   return token_type != NULL ? *token_type : TT_VAR;

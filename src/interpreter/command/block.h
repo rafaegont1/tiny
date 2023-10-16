@@ -1,5 +1,5 @@
-#ifndef LIST_H
-#define LIST_H
+#ifndef BLOCK_H
+#define BLOCK_H
 
 #include "../expr/expr.h"
 
@@ -45,4 +45,4 @@ void blk_init(BlockCmd* cmds);
 void blk_deinit(BlockCmd* cmds);
 void blk_set(BlockCmd* cmds, Command* new_node);
 
-#endif /* LIST_H */
+#endif /* BLOCK_H */
