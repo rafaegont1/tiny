@@ -21,6 +21,7 @@ void st_init(map_int_t* symbol_table) {
   map_set(symbol_table, "*", TT_MUL);
   map_set(symbol_table, "/", TT_DIV);
   map_set(symbol_table, "%", TT_MOD);
+  map_set(symbol_table, "^", TT_POW);
 
   // Keywords
   map_set(symbol_table, "program", TT_PROGRAM);

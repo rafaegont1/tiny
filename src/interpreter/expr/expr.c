@@ -2,6 +2,7 @@
 #include "../util/Memory.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <string.h>
 
 int expr_binaryInt(BinaryInt* intergers);
@@ -92,6 +93,15 @@ int expr_binaryInt(BinaryInt* intergers) {
 
     case OP_MOD:
       value = v1 % v2;
+      break;
+
+    case OP_POW:
+      //value = (int) pow(v1, v2);
+      if (v2 == 0) return 1;
+      value = v1;
+      for (int i = 1; i < v2; i++) {
+        value *= v1;
+      }
       break;
   }
 

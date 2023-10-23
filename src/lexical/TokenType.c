@@ -26,24 +26,25 @@ const char *tt_str[] = {
   "MUL",            // 13
   "DIV",            // 14
   "MOD",            // 15
+  "POW",            // 16
 
   // Keywords
-  "PROGRAM",        // 16
-  "WHILE",          // 17
-  "DO",             // 18
-  "DONE",           // 19
-  "IF",             // 20
-  "THEN",           // 21
-  "ELSE",           // 22
-  "OUTPUT",         // 23
-  "TRUE",           // 24
-  "FALSE",          // 25
-  "READ",           // 26
-  "NOT",            // 27
+  "PROGRAM",        // 17
+  "WHILE",          // 18
+  "DO",             // 19
+  "DONE",           // 20
+  "IF",             // 21
+  "THEN",           // 22
+  "ELSE",           // 23
+  "OUTPUT",         // 24
+  "TRUE",           // 25
+  "FALSE",          // 26
+  "READ",           // 27
+  "NOT",            // 28
 
   // Others
-  "NUMBER",         // 28
-  "VAR"             // 29
+  "NUMBER",         // 29
+  "VAR"             // 30
 };
 
 const char* tt2str(enum TokenType type) {

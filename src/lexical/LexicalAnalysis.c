@@ -51,7 +51,8 @@ Lexeme la_nextToken(LexicalAnalysis* la)
           lex.token[token_sz++] = c;
           state = 4;
         } else if (c == ';' || c == '+' || c == '-' ||
-            c == '*' || c == '/' || c == '%') {
+                   c == '*' || c == '/' || c == '%' ||
+                   c == '^') {
           lex.token[token_sz++] = c;
           state = 7;
         } else if (c == '_' || isalpha(c)) {

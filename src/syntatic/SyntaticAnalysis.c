@@ -76,9 +76,9 @@ BlockCmd* sa_cmdList(SyntaticAnalysis* sa) {
   cmd = sa_cmd(sa);
   blk_set(cmds, cmd);
 
-  while (sa->lex.type == TT_VAR ||
+  while (sa->lex.type == TT_VAR    ||
          sa->lex.type == TT_OUTPUT ||
-         sa->lex.type == TT_IF ||
+         sa->lex.type == TT_IF     ||
          sa->lex.type == TT_WHILE) {
     cmd = sa_cmd(sa);
     blk_set(cmds, cmd);
@@ -240,7 +240,7 @@ Expr* sa_boolExpr(SyntaticAnalysis* sa) {
   }
 }
 
-// <intexpr>   ::= [ + | - ] <intterm> [ (+ | - | * | / | %) <intterm> ]
+// <intexpr>   ::= [ + | - ] <intterm> [ (+ | - | * | / | % | ^) <intterm> ]
 Expr* sa_intExpr(SyntaticAnalysis* sa) {
   Expr* int_expr;
   bool is_negative = false;
@@ -262,7 +262,8 @@ Expr* sa_intExpr(SyntaticAnalysis* sa) {
       sa->lex.type == TT_SUB ||
       sa->lex.type == TT_MUL ||
       sa->lex.type == TT_DIV ||
-      sa->lex.type == TT_MOD) {
+      sa->lex.type == TT_MOD ||
+      sa->lex.type == TT_POW) {
     BinaryInt* bin = (BinaryInt*) malloc(sizeof(BinaryInt));
 
     switch (sa->lex.type) {
@@ -284,6 +285,10 @@ Expr* sa_intExpr(SyntaticAnalysis* sa) {
 
       case TT_MOD:
         bin->op = OP_MOD;
+        break;
+
+      case TT_POW:
+        bin->op = OP_POW;
         break;
 
       default:

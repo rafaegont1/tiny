@@ -15,12 +15,18 @@ enum expr {
   EXPR_NOT_BOOL
 };
 
-enum int_op { OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_MOD };
+enum int_op {
+  OP_ADD, OP_SUB,
+  OP_MUL, OP_DIV,
+  OP_MOD, OP_POW };
 
 enum bool_op {
-  OP_EQUAL, OP_NOT_EQUAL,
-  OP_LOWER, OP_GREATER,
-  OP_LOWER_EQUAL, OP_GREATER_EQUAL
+  OP_EQUAL,
+  OP_NOT_EQUAL,
+  OP_LOWER,
+  OP_GREATER,
+  OP_LOWER_EQUAL,
+  OP_GREATER_EQUAL
 };
 
 typedef struct Expr Expr;
